@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impostor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        input {
+            padding: 15px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+
+        .game-code {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #667eea;
+        }
+
+        .word-display {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 40px 0;
+            padding: 30px;
+            border-radius: 15px;
+            background: #f8f9fa;
+            user-select: none;
+            cursor: pointer;
+            position: relative;
+            color: #999;
+            border: 3px solid #999;
+        }
+
+        .word-display.player.revealed {
+            color: #28a745;
+            border: 3px solid #28a745;
+        }
+
+        .word-display.impostor.revealed {
+            color: #dc3545;
+            border: 3px solid #dc3545;
+            animation: pulse 2s infinite;
+        }
+
+        .reveal-hint {
+            color: #999;
+            font-size: 0.9em;
+            margin: -30px 0 20px 0;
+            font-style: italic;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .share-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .share-url {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            word-break: break-all;
+            font-size: 0.9em;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+        }
+
+        .info-text {
+            color: #666;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px 0;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .game-info-corner {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            text-align: right;
+            border: 1px solid #ddd;
+            max-width: 200px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .game-info-corner .game-code {
+            font-size: 1em;
+            padding: 5px;
+            margin: 5px 0;
+            letter-spacing: 2px;
+        }
+
+        .game-info-corner .share-url {
+            font-size: 0.7em;
+            padding: 5px;
+            margin: 5px 0;
+            word-break: break-all;
+        }
+
+        .game-info-corner button {
+            padding: 5px 10px;
+            font-size: 0.8em;
+            margin: 5px 0 0 0;
+        }
+
+        .game-info-corner p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .game-info-corner {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                max-width: none;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Home Screen -->
+        <div id="homeScreen" class="screen active">
+            <h1>🎭 Impostor</h1>
+            <p class="info-text">A game of deception and deduction</p>
+            <button onclick="createGame()">Create New Game</button>
+            <button onclick="showJoinGame()">Join Game</button>
+        </div>
+
+        <!-- Join Game Screen -->
+        <div id="joinScreen" class="screen">
+            <h1>🎭 Join Game</h1>
+            <label for="joinCode">Enter Game Code:</label>
+            <input type="text" id="joinCode" placeholder="ABCD" maxlength="4">
+            <br>
+            <button onclick="joinGame()">Join</button>
+            <button onclick="showHome()">Back</button>
+        </div>
+
+        <!-- Lobby Screen -->
+        <div id="lobbyScreen" class="screen">
+            <h1>🎭 Game Lobby</h1>
+            <p class="info-text">Share this code or link with other players:</p>
+            <div class="game-code" id="displayGameCode"></div>
+            <div class="share-section">
+                <p><strong>Game Link:</strong></p>
+                <div class="share-url" id="gameUrl"></div>
+                <button onclick="copyGameUrl()">Copy Link</button>
+            </div>
+            <button onclick="startGame()">Start Game</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <div class="game-info-corner">
+                <p><strong>Code:</strong></p>
+                <div class="game-code" id="gameScreenCode"></div>
+                <div class="share-url" id="gameScreenUrl"></div>
+                <button onclick="copyGameUrl()">Copy Link</button>
+            </div>
+            <h1>🎭 Round <span id="roundNumber">1</span></h1>
+            <p class="info-text">Don't let others see your screen!</p>
+            <div class="word-display" id="wordDisplay"></div>
+            <p class="reveal-hint">👆 Click and hold to reveal</p>
+            <button onclick="nextRound()">Next Round</button>
+            <button onclick="endGame()">End Game</button>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let currentGameCode = '';
+        let currentRound = 1;
+        let currentWord = '';
+        let isCurrentPlayerImpostor = false;
+        const IMPOSTOR_PROBABILITY = 0.33; // 33% chance of being impostor
+
+        // Wordlist configuration
+        const WORDLIST_DIR = 'wordlists';
+        const TOTAL_WORDLIST_FILES = 42;
+        const WORDS_PER_FILE = 200;
+
+        // Simple hash function to convert string to number
+        function hashCode(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32-bit integer
+            }
+            return Math.abs(hash);
+        }
+
+        // Seeded random number generator
+        function seededRandom(seed) {
+            const x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        // Get word index from game code and round
+        function getWordIndices(gameCode, round) {
+            const seed = hashCode(gameCode + round);
+            const random = seededRandom(seed);
+
+            // Calculate file and word index
+            const totalWords = TOTAL_WORDLIST_FILES * WORDS_PER_FILE;
+            const wordIndex = Math.floor(random * totalWords);
+
+            const fileIndex = Math.floor(wordIndex / WORDS_PER_FILE) + 1;
+            const wordInFile = wordIndex % WORDS_PER_FILE;
+
+            return { fileIndex, wordInFile };
+        }
+
+        // Load word from wordlist
+        async function loadWord(gameCode, round) {
+            const { fileIndex, wordInFile } = getWordIndices(gameCode, round);
+            const fileName = `${WORDLIST_DIR}/words-${String(fileIndex).padStart(3, '0')}.txt`;
+
+            try {
+                const response = await fetch(fileName);
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${fileName}`);
+                }
+                const text = await response.text();
+                const words = text.split('\n').filter(w => w.trim().length > 0);
+                return words[wordInFile] || words[0];
+            } catch (error) {
+                console.error('Error loading word:', error);
+                return 'BANANA'; // Fallback word
+            }
+        }
+
+        // Initialize
+        function init() {
+            // Check if there's a game code in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameCode = urlParams.get('game');
+            const round = urlParams.get('round');
+
+            if (gameCode) {
+                currentGameCode = gameCode.toUpperCase();
+                if (round) {
+                    currentRound = parseInt(round) || 1;
+                    // If round is specified, go directly to game
+                    startGame();
+                } else {
+                    showLobby();
+                }
+            }
+        }
+
+        // Update URL with current game state
+        function updateUrl() {
+            const newUrl = `${window.location.pathname}?game=${currentGameCode}&round=${currentRound}`;
+            window.history.pushState({}, '', newUrl);
+        }
+
+        // Navigation functions
+        function showHome() {
+            hideAllScreens();
+            document.getElementById('homeScreen').classList.add('active');
+        }
+
+        function showJoinGame() {
+            hideAllScreens();
+            document.getElementById('joinScreen').classList.add('active');
+        }
+
+        function showLobby() {
+            hideAllScreens();
+            document.getElementById('lobbyScreen').classList.add('active');
+            document.getElementById('displayGameCode').textContent = currentGameCode;
+
+            // Generate and display game URL (without round for lobby)
+            const gameUrl = `${window.location.origin}${window.location.pathname}?game=${currentGameCode}`;
+            document.getElementById('gameUrl').textContent = gameUrl;
+
+            // Update URL
+            const newUrl = `${window.location.pathname}?game=${currentGameCode}`;
+            window.history.pushState({}, '', newUrl);
+        }
+
+        function showGame() {
+            hideAllScreens();
+            document.getElementById('gameScreen').classList.add('active');
+        }
+
+        function hideAllScreens() {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+        }
+
+        // Game code generation
+        function generateGameCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let code = '';
+            for (let i = 0; i < 4; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Create game
+        function createGame() {
+            currentGameCode = generateGameCode();
+            currentRound = 1;
+            showLobby();
+        }
+
+        // Join game
+        function joinGame() {
+            const code = document.getElementById('joinCode').value.trim().toUpperCase();
+            if (code.length !== 4) {
+                alert('Please enter a valid 4-letter game code');
+                return;
+            }
+            currentGameCode = code;
+            currentRound = 1;
+
+            // Update URL without reloading
+            const newUrl = `${window.location.pathname}?game=${currentGameCode}`;
+            window.history.pushState({}, '', newUrl);
+
+            showLobby();
+        }
+
+        // Start game
+        async function startGame() {
+            // Show loading state
+            const wordDisplay = document.getElementById('wordDisplay');
+            wordDisplay.textContent = 'Loading...';
+            wordDisplay.className = 'word-display';
+
+            // Load word based on game code and round
+            currentWord = await loadWord(currentGameCode, currentRound);
+
+            // Determine if this player is an impostor
+            isCurrentPlayerImpostor = Math.random() < IMPOSTOR_PROBABILITY;
+
+            // Set up word display with placeholder
+            wordDisplay.textContent = '?????';
+            wordDisplay.className = 'word-display' + (isCurrentPlayerImpostor ? ' impostor' : ' player');
+
+            // Update round number
+            document.getElementById('roundNumber').textContent = currentRound;
+
+            // Display game code and URL on game screen (with round)
+            document.getElementById('gameScreenCode').textContent = currentGameCode;
+            const gameUrl = `${window.location.origin}${window.location.pathname}?game=${currentGameCode}&round=${currentRound}`;
+            document.getElementById('gameScreenUrl').textContent = gameUrl;
+
+            // Update URL with round
+            updateUrl();
+
+            // Setup reveal on hold
+            setupRevealOnHold();
+
+            showGame();
+        }
+
+        // Setup reveal on hold functionality
+        function setupRevealOnHold() {
+            const wordDisplay = document.getElementById('wordDisplay');
+
+            function reveal() {
+                wordDisplay.textContent = isCurrentPlayerImpostor ? 'IMPOSTOR' : currentWord;
+                wordDisplay.classList.add('revealed');
+            }
+
+            function hide() {
+                wordDisplay.textContent = '?????';
+                wordDisplay.classList.remove('revealed');
+            }
+
+            // Mouse events
+            wordDisplay.addEventListener('mousedown', reveal);
+            wordDisplay.addEventListener('mouseup', hide);
+            wordDisplay.addEventListener('mouseleave', hide);
+
+            // Touch events for mobile
+            wordDisplay.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                reveal();
+            });
+
+            wordDisplay.addEventListener('touchend', hide);
+            wordDisplay.addEventListener('touchcancel', hide);
+        }
+
+        // Next round
+        function nextRound() {
+            currentRound++;
+            startGame();
+        }
+
+        // End game
+        function endGame() {
+            if (confirm('Are you sure you want to end the game?')) {
+                currentRound = 1;
+                // Clear URL params
+                window.history.pushState({}, '', window.location.pathname);
+                showHome();
+            }
+        }
+
+        // Copy game URL
+        function copyGameUrl() {
+            // If we're in the game screen, include the round; otherwise just the game code
+            const isInGame = document.getElementById('gameScreen').classList.contains('active');
+            let gameUrl;
+            if (isInGame) {
+                gameUrl = `${window.location.origin}${window.location.pathname}?game=${currentGameCode}&round=${currentRound}`;
+            } else {
+                gameUrl = `${window.location.origin}${window.location.pathname}?game=${currentGameCode}`;
+            }
+
+            navigator.clipboard.writeText(gameUrl).then(() => {
+                alert('Game link copied to clipboard!');
+            }).catch(err => {
+                alert('Failed to copy link. Please copy manually.');
+            });
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
