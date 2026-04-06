@@ -13,78 +13,6 @@ The classic Impostor social-deduction word game.
 - **Real-time backend**: Go-based backend for fast, responsive gameplay
 - **Mobile-friendly**: Clean, responsive UI that works on all devices
 
-## Quick Start
-
-### 1. Start the Backend
-
-**Easiest way** (using the run script):
-
-```bash
-./run.sh        # Starts on port 8080
-./run.sh 3000   # Custom port
-```
-
-**Or using Make**:
-
-```bash
-make run                  # Starts on port 8080
-PORT=3000 make run-port   # Custom port
-```
-
-**Or directly**:
-
-```bash
-make build            # Build once
-./bin/impostor        # Run on default port 8080
-./bin/impostor -port 3000  # Run on custom port
-```
-
-### 2. Play the Game
-
-1. Open `http://localhost:8080` in your browser
-2. Click **"Create New Game"** and enter your name
-3. Share the game code or link with friends
-4. When everyone joins, click **"Start Round 1"**
-5. Click and hold to reveal your word or impostor status
-6. Discuss and try to identify the impostors!
-
-### 3. Test with Multiple Players
-
-Open multiple browser windows or use private/incognito mode to simulate multiple players:
-
-```bash
-# In different browser windows/tabs
-http://localhost:8080  # Player 1 creates game
-http://localhost:8080  # Player 2 joins with code
-http://localhost:8080  # Player 3 joins with code
-```
-
-## Documentation
-
-- **[QUICKSTART.md](QUICKSTART.md)** - 30-second setup guide ⚡
-- **[BACKEND_README.md](BACKEND_README.md)** - Backend API documentation and architecture
-- **[FRONTEND_README.md](FRONTEND_README.md)** - Frontend features and game instructions
-- **[PLAYER_LIST_FEATURE.md](PLAYER_LIST_FEATURE.md)** - Real-time player list documentation
-- **[KICK_PLAYER_FEATURE.md](KICK_PLAYER_FEATURE.md)** - Host kick controls documentation
-- **[KICK_NOTIFICATION_FLOW.md](KICK_NOTIFICATION_FLOW.md)** - How kick notifications work
-- **[ROUND_UPDATE_NOTIFICATIONS.md](ROUND_UPDATE_NOTIFICATIONS.md)** - Auto-sync round changes
-- **[DEMO.md](DEMO.md)** - Live demo walkthrough
-- **[CHANGELOG.md](CHANGELOG.md)** - Version history and bug fixes
-
-## How It Works
-
-**Backend (Go)**:
-- RESTful API with in-memory session storage
-- Intelligent role assignment (≥1 impostor, ~1 average)
-- Word selection from 40+ curated word lists
-- Voting-based word skipping with role reassignment
-
-**Frontend (HTML/JS)**:
-- Clean, mobile-friendly interface
-- Click-and-hold word reveal for privacy
-- Real-time game state synchronization
-- Shareable game links
-
 ## Project Structure
 
 ```
@@ -142,3 +70,21 @@ go test ./internal/wordlist -v
 ./test_word_skip_notification.sh
 ./test_player_order.sh
 ```
+
+## Deploying 
+
+Project resources are deployed via terraform. 
+
+Install terraform locally: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+
+Install the AWS CLI V2: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+Assume privileged role in AWS account:
+
+`aws login --profile seanmjohns1` (requires Access Key and Access Secret)
+
+Deploy it:
+
+`make deploy`
+
+You will be prompted for confirmation of terraform changes during the terraform apply. You should see a forced replacement (or not forced if you've changed some values), of the EC2 instance. **Of course, if you see other changes, please ensure that they are expected.** For more information, see `terraform/README.md`. 

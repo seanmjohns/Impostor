@@ -15,7 +15,7 @@ import (
 
 func main() {
 	// Parse command line flags
-	portFlag := flag.String("port", "", "Port to listen on (default: 8080, or PORT env var)")
+	portFlag := flag.String("port", "", "Port to listen on (default: 443, or PORT env var)")
 	flag.Parse()
 	// Determine wordlist directory
 	wordlistDir := os.Getenv("WORDLIST_DIR")
