@@ -1,0 +1,769 @@
+afghanistan
+albania
+algeria
+andorra
+angola
+antigua and barbuda
+argentina
+armenia
+australia
+austria
+azerbaijan
+bahamas
+bahrain
+bangladesh
+barbados
+belarus
+belgium
+belize
+benin
+bhutan
+bolivia
+bosnia and herzegovina
+botswana
+brazil
+brunei darussalam
+bulgaria
+burkina faso
+burundi
+cabo verde
+cambodia
+cameroon
+canada
+central african republic
+chad
+chile
+china
+colombia
+comoros
+congo
+costa rica
+côte d'ivoire
+croatia
+cuba
+cyprus
+czechia
+democratic people's republic of korea
+democratic republic of the congo
+denmark
+djibouti
+dominica
+dominican republic
+ecuador
+egypt
+el salvador
+equatorial guinea
+eritrea
+estonia
+eswatini
+ethiopia
+fiji
+finland
+france
+gabon
+gambia
+georgia
+germany
+ghana
+greece
+grenada
+guatemala
+guinea
+guinea-bissau
+guyana
+haiti
+honduras
+hungary
+iceland
+india
+indonesia
+iran
+iraq
+ireland
+israel
+italy
+jamaica
+japan
+jordan
+kazakhstan
+kenya
+kiribati
+kuwait
+kyrgyzstan
+lao people's democratic republic
+latvia
+lebanon
+lesotho
+liberia
+libya
+liechtenstein
+lithuania
+luxembourg
+madagascar
+malawi
+malaysia
+maldives
+mali
+malta
+marshall islands
+mauritania
+mauritius
+mexico
+micronesia
+monaco
+mongolia
+montenegro
+morocco
+mozambique
+myanmar
+namibia
+nauru
+nepal
+netherlands
+new zealand
+nicaragua
+niger
+nigeria
+north macedonia
+norway
+oman
+pakistan
+palau
+palestine
+panama
+papua new guinea
+paraguay
+peru
+philippines
+poland
+portugal
+qatar
+republic of korea
+republic of moldova
+romania
+russian federation
+rwanda
+saint kitts and nevis
+saint lucia
+saint vincent and the grenadines
+samoa
+san marino
+sao tome and principe
+saudi arabia
+senegal
+serbia
+seychelles
+sierra leone
+singapore
+slovakia
+slovenia
+solomon islands
+somalia
+south africa
+south sudan
+spain
+sri lanka
+sudan
+suriname
+sweden
+switzerland
+syrian arab republic
+tajikistan
+thailand
+timor-leste
+togo
+tonga
+trinidad and tobago
+tunisia
+türkiye
+turkmenistan
+tuvalu
+uganda
+ukraine
+united arab emirates
+uae
+united kingdom of great britain and northern ireland
+uk
+united republic of tanzania
+united states of america
+us
+usa
+uruguay
+uzbekistan
+vanuatu
+venezuela
+viet nam
+yemen
+zambia
+zimbabwe
+holy see
+state of palestine
+lion
+tiger
+elephant
+giraffe
+zebra
+monkey
+panda
+koala
+kangaroo
+dolphin
+bear
+wolf
+fox
+leopard
+cheetah
+rhinoceros
+hippopotamus
+deer
+camel
+goat
+sheep
+cow
+buffalo
+horse
+donkey
+pig
+dog
+cat
+rabbit
+mouse
+rat
+squirrel
+bat
+otter
+beaver
+raccoon
+skunk
+moose
+antelope
+reindeer
+chimpanzee
+gorilla
+orangutan
+whale
+shark
+seal
+walrus
+penguin
+flamingo
+ostrich
+eagle
+hawk
+falcon
+owl
+sparrow
+parrot
+peacock
+swan
+crow
+pigeon
+turkey
+chicken
+duck
+goose
+lizard
+crocodile
+alligator
+snake
+frog
+toad
+turtle
+tortoise
+crab
+lobster
+octopus
+jellyfish
+starfish
+seahorse
+bee
+ant
+butterfly
+moth
+spider
+scorpion
+mosquito
+fly
+dragonfly
+ladybug
+snail
+worm
+manatee
+narwhal
+blue whale
+humpback whale
+orca
+beluga
+stingray
+manta ray
+eel
+moray eel
+clownfish
+tuna
+salmon
+trout
+carp
+catfish
+bass
+pike
+anchovy
+sardine
+guppy
+goldfish
+betta
+angelfish
+lionfish
+goby
+lamprey
+crayfish
+plankton
+krill
+sea cucumber
+sea urchin
+barnacle
+coral
+sea sponge
+nudibranch
+newt
+axolotl
+mudskipper
+flatfish
+halibut
+mackerel
+marlin
+barracuda
+grouper
+flounder
+sea turtle
+blue tang
+zebra fish
+sailfish
+kabul
+tirana
+algiers
+andorra la vella
+luanda
+st. john's
+buenos aires
+yerevan
+canberra
+vienna
+baku
+nassau
+manama
+dhaka
+bridgetown
+minsk
+brussels
+belmopan
+porto-novo
+thimphu
+la paz
+sucre
+sarajevo
+gaborone
+brasília
+bandar seri begawan
+sofia
+ouagadougou
+gitega
+praia
+phnom penh
+yaoundé
+ottawa
+bangui
+n'djamena
+santiago
+beijing
+bogotá
+moroni
+brazzaville
+san josé
+yamoussoukro
+zagreb
+havana
+nicosia
+prague
+pyongyang
+kinshasa
+copenhagen
+djibouti
+roseau
+santo domingo
+quito
+cairo
+san salvador
+malabo
+asmara
+tallinn
+mbabane
+lobamba
+addis ababa
+suva
+helsinki
+paris
+libreville
+banjul
+tbilisi
+berlin
+accra
+athens
+st. george's
+guatemala city
+conakry
+bissau
+georgetown
+port-au-prince
+tegucigalpa
+budapest
+reykjavik
+new delhi
+jakarta
+tehran
+baghdad
+dublin
+jerusalem
+rome
+kingston
+tokyo
+amman
+astana
+nairobi
+tarawa
+kuwait city
+bishkek
+vientiane
+riga
+beirut
+maseru
+monrovia
+tripoli
+vaduz
+vilnius
+luxembourg
+antananarivo
+lilongwe
+kuala lumpur
+malé
+bamako
+valletta
+majuro
+nouakchott
+port louis
+mexico city
+palikir
+monaco
+ulaanbaatar
+podgorica
+rabat
+maputo
+naypyidaw
+windhoek
+yaren
+kathmandu
+amsterdam
+wellington
+managua
+niamey
+abuja
+skopje
+oslo
+muscat
+islamabad
+ngerulmud
+panama city
+port moresby
+asunción
+lima
+manila
+warsaw
+lisbon
+doha
+seoul
+chișinău
+bucharest
+moscow
+kigali
+basseterre
+castries
+kingstown
+apia
+san marino
+são tomé
+riyadh
+dakar
+belgrade
+victoria
+freetown
+singapore
+bratislava
+ljubljana
+honiara
+mogadishu
+pretoria
+bloemfontein
+cape town
+juba
+madrid
+sri jayawardenepura kotte
+colombo
+khartoum
+paramaribo
+stockholm
+bern
+damascus
+dushanbe
+bangkok
+dili
+lomé
+nukuʻalofa
+port of spain
+tunis
+ankara
+ashgabat
+funafuti
+kampala
+kyiv
+abu dhabi
+london
+dodoma
+washington, d.c.
+montevideo
+tashkent
+port vila
+caracas
+hanoi
+sana'a
+lusaka
+harare
+vatican city
+east jerusalem
+ramallah
+soccer
+football
+basketball
+baseball
+tennis
+cricket
+volleyball
+rugby
+hockey
+golf
+badminton
+table tennis
+tennis
+swimming
+boxing
+wrestling
+karate
+judo
+taekwondo
+mma
+archery
+fencing
+cycling
+track
+long jump
+high jump
+pole vault
+shot put
+discus throw
+javelin throw
+skating
+ice hockey
+snowboarding
+skiing
+squash
+handball
+surfing
+diving
+rowing
+canoeing
+sailing
+horse racing
+equestrian
+gymnastics
+triathlon
+motorsport
+formula 1
+rally
+bmx
+rock climbing
+speed skating
+snooker
+darts
+pickleball
+lacrosse
+polo
+sumo
+netball
+kabaddi
+sepaktakraw
+ultimate frisbee
+billiards
+bodybuilding
+cheerleading
+parkour
+freestyle wrestling
+greco-roman wrestling
+kitesurfing
+powerlifting
+aikido
+muay thai
+sambo
+paintball
+airsoft
+eSports
+chess
+f1
+khokho
+eagle
+hawk
+sparrow
+pigeon
+parrot
+penguin
+ostrich
+flamingo
+peacock
+hummingbird
+owl
+swan
+crow
+robin
+woodpecker
+kingfisher
+canary
+nightingale
+macaw
+cockatoo
+dove
+stork
+crane
+heron
+vulture
+falcon
+kite
+blue jay
+cardinal
+finch
+magpie
+lark
+oriole
+quail
+toucan
+cuckoo
+swallow
+albatross
+tern
+bald eagle
+goldfinch
+wren
+jay
+nighthawk
+ptarmigan
+gull
+pelican
+emu
+cassowary
+turkey
+chicken
+duck
+goose
+rooster
+buzzard
+bee-eater
+grebe
+loonie
+bustard
+lapwing
+google
+microsoft
+apple
+amazon
+facebook
+tesla
+netflix
+twitter
+samsung
+sony
+nvidia
+intel
+ibm
+adobe
+paypal
+oracle
+cisco
+uber
+airbnb
+spotify
+zoom
+tiktok
+wechat
+baidu
+alibaba
+huawei
+dell
+hp
+lenovo
+asus
+xiaomi
+motorola
+panasonic
+lg
+qualcomm
+snapchat
+reddit
+dropbox
+salesforce
+shopify
+stripe
+square
+bytedance
+spaceX
+openai
+linkedin
+pinterest
+flipkart
+olx
+swiggy
+zomato
+ola
+jio
+reliance
+infosys
+tcs
+wipro
+tata
+tsc
+hotstar
+hcl
+capgemini
+cognizant
+accenture
+mahindra
+ford
+bmw
+audi
+mercedes
+volkswagen
+toyota
+honda
+kia
+pepsi
+coca cola
+nike
+adidas
+puma
+reebok
+unilever
+nestle
+procter & gamble
+johnson & johnson
+hulu
+stake
+yahoo
+ubisoft
+ea
+ea games
+electronic arts
