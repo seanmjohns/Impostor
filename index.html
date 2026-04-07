@@ -66,6 +66,29 @@
             transform: translateY(0);
         }
 
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.secondary {
+            background: #6c757d;
+        }
+
+        button.danger {
+            background: #dc3545;
+        }
+
+        button.skip {
+            background: #ffc107;
+            color: #333;
+        }
+
+        button.success {
+            background: #28a745;
+        }
+
         input {
             padding: 15px;
             border: 2px solid #667eea;
@@ -94,26 +117,39 @@
         }
 
         .word-display {
-            font-size: 3em;
-            font-weight: bold;
             margin: 40px 0;
-            padding: 30px;
+            padding: 30px 30px 15px 30px;
             border-radius: 15px;
             background: #f8f9fa;
             user-select: none;
             cursor: pointer;
             position: relative;
-            color: #999;
             border: 3px solid #999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .word-text {
+            font-size: 3em;
+            font-weight: bold;
+            color: #999;
+        }
+
+        .word-display.player.revealed .word-text {
+            color: #28a745;
+        }
+
+        .word-display.impostor.revealed .word-text {
+            color: #dc3545;
         }
 
         .word-display.player.revealed {
-            color: #28a745;
             border: 3px solid #28a745;
         }
 
         .word-display.impostor.revealed {
-            color: #dc3545;
             border: 3px solid #dc3545;
             animation: pulse 2s infinite;
         }
@@ -121,8 +157,36 @@
         .reveal-hint {
             color: #999;
             font-size: 0.9em;
-            margin: -30px 0 20px 0;
+            margin: -30px 0 5px 0;
             font-style: italic;
+        }
+
+        .skip-hint {
+            color: #666;
+            font-size: 0.7em;
+            font-style: italic;
+            min-height: 18px;
+            text-align: center;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .skip-hint.visible {
+            opacity: 1;
+        }
+
+        .skip-hint.can-skip {
+            color: #007bff;
+        }
+
+        .skip-hint.already-skipped {
+            color: #28a745;
+        }
+
+        .word-display.swiping {
+            transform: translateX(var(--swipe-distance, 0px));
+            transition: transform 0.05s linear;
         }
 
         @keyframes pulse {
@@ -157,6 +221,18 @@
             font-size: 0.95em;
         }
 
+        .error-text {
+            color: #dc3545;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+
+        .success-text {
+            color: #28a745;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+
         label {
             display: block;
             margin: 10px 0 5px 0;
@@ -164,56 +240,112 @@
             font-weight: 500;
         }
 
-        .game-info-corner {
-            position: fixed;
-            top: 20px;
-            right: 20px;
+        .player-info {
             background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .host-badge {
+            display: inline-block;
+            background: #ffc107;
+            color: #333;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .skip-info {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
             padding: 10px;
             border-radius: 8px;
-            font-size: 0.75em;
-            text-align: right;
-            border: 1px solid #ddd;
-            max-width: 200px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
+            margin: 15px 0;
+            font-size: 0.9em;
         }
 
-        .game-info-corner .game-code {
-            font-size: 1em;
-            padding: 5px;
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .pulse-animation {
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+            }
+        }
+
+        .players-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .players-section h3 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .player-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .player-item {
+            padding: 8px 12px;
             margin: 5px 0;
-            letter-spacing: 2px;
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid #667eea;
         }
 
-        .game-info-corner .share-url {
-            font-size: 0.7em;
-            padding: 5px;
-            margin: 5px 0;
-            word-break: break-all;
+        .player-item.is-you {
+            border-left-color: #28a745;
+            background: #f0fff4;
         }
 
-        .game-info-corner button {
-            padding: 5px 10px;
-            font-size: 0.8em;
-            margin: 5px 0 0 0;
+        .player-item.is-host {
+            border-left-color: #ffc107;
         }
 
-        .game-info-corner p {
-            margin: 5px 0;
+        .player-count {
             font-size: 0.9em;
             color: #666;
+            text-align: center;
+            margin-top: 10px;
         }
 
-        @media (max-width: 768px) {
-            .game-info-corner {
-                top: auto;
-                bottom: 20px;
-                right: 20px;
-                left: 20px;
-                max-width: none;
-                text-align: center;
-            }
+        .kick-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .kick-btn:hover {
+            background: #c82333;
         }
     </style>
 </head>
@@ -223,167 +355,201 @@
         <div id="homeScreen" class="screen active">
             <h1>🎭 Impostor</h1>
             <p class="info-text">A game of deception and deduction</p>
-            <button onclick="createGame()">Create New Game</button>
+            <button onclick="showCreateGame()">Create New Game</button>
             <button onclick="showJoinGame()">Join Game</button>
+        </div>
+
+        <!-- Create Game Screen -->
+        <div id="createScreen" class="screen">
+            <h1>🎭 Create Game</h1>
+            <label for="createName">Your Name:</label>
+            <input type="text" id="createName" placeholder="Enter your name" maxlength="20">
+            <br>
+            <button onclick="createGame()">Create Game</button>
+            <button class="secondary" onclick="showHome()">Back</button>
+            <p id="createError" class="error-text" style="display: none;"></p>
         </div>
 
         <!-- Join Game Screen -->
         <div id="joinScreen" class="screen">
             <h1>🎭 Join Game</h1>
-            <label for="joinCode">Enter Game Code:</label>
-            <input type="text" id="joinCode" placeholder="ABCD" maxlength="4">
+            <label for="joinCode">Game Code:</label>
+            <input type="text" id="joinCode" placeholder="ABCDEF" maxlength="6">
+            <label for="joinName">Your Name:</label>
+            <input type="text" id="joinName" placeholder="Enter your name" maxlength="20">
             <br>
             <button onclick="joinGame()">Join</button>
-            <button onclick="showHome()">Back</button>
+            <button class="secondary" onclick="showHome()">Back</button>
+            <p id="joinError" class="error-text" style="display: none;"></p>
         </div>
 
         <!-- Lobby Screen -->
         <div id="lobbyScreen" class="screen">
             <h1>🎭 Game Lobby</h1>
-            <p class="info-text">Share this code or link with other players:</p>
+            <div class="player-info">
+                <p><strong>Player:</strong> <span id="playerName"></span></p>
+                <p id="hostIndicator"></p>
+            </div>
+            <p class="info-text">Share this code with other players:</p>
             <div class="game-code" id="displayGameCode"></div>
             <div class="share-section">
                 <p><strong>Game Link:</strong></p>
                 <div class="share-url" id="gameUrl"></div>
                 <button onclick="copyGameUrl()">Copy Link</button>
             </div>
-            <button onclick="startGame()">Start Game</button>
+
+            <div class="players-section">
+                <h3>Players</h3>
+                <ul class="player-list" id="lobbyPlayerList">
+                    <li class="player-item">Loading...</li>
+                </ul>
+                <p class="player-count" id="lobbyPlayerCount">0 players</p>
+            </div>
+
+            <p class="info-text" id="lobbyInstructions">When everyone has joined, start the first round!</p>
+            <button id="startRoundBtn" onclick="startRound()" style="display: none;">Start Round 1</button>
+            <button class="secondary" onclick="leaveGame()">Leave Game</button>
         </div>
 
         <!-- Game Screen -->
         <div id="gameScreen" class="screen">
-            <div class="game-info-corner">
-                <p><strong>Code:</strong></p>
-                <div class="game-code" id="gameScreenCode"></div>
-                <div class="share-url" id="gameScreenUrl"></div>
-                <button onclick="copyGameUrl()">Copy Link</button>
-            </div>
             <h1>🎭 Round <span id="roundNumber">1</span></h1>
+            <div class="player-info">
+                <p><strong>Player:</strong> <span id="gamePlayerName"></span></p>
+                <p><strong>Game Code:</strong> <span id="gameCode" class="game-code" style="font-size: 1em; padding: 5px 10px; margin: 5px 0; display: inline-block;"></span></p>
+            </div>
+
+            <div class="players-section">
+                <h3>Players</h3>
+                <ul class="player-list" id="gamePlayerList">
+                    <li class="player-item">Loading...</li>
+                </ul>
+                <p class="player-count" id="gamePlayerCount">0 players</p>
+            </div>
+
             <p class="info-text">Don't let others see your screen!</p>
-            <div class="word-display" id="wordDisplay"></div>
+            <div class="word-display" id="wordDisplay">
+                <div class="word-text">?????</div>
+                <div class="skip-hint" id="skipHint"></div>
+            </div>
             <p class="reveal-hint">👆 Click and hold to reveal</p>
-            <button onclick="nextRound()">Next Round</button>
-            <button onclick="endGame()">End Game</button>
+
+            <button id="nextRoundBtn" onclick="nextRound()" style="display: none;">Next Round</button>
+            <button id="endGameBtn" class="danger" onclick="endGame()" style="display: none;">End Game</button>
+            <button id="leaveGameBtn" class="secondary" onclick="leaveGame()" style="display: none;">Leave Game</button>
         </div>
     </div>
 
     <script>
+        // Configuration
+        const API_BASE = window.location.origin;
+
         // Game state
-        let currentGameCode = '';
-        let currentRound = 1;
-        let currentWord = '';
-        let isCurrentPlayerImpostor = false;
-        const IMPOSTOR_PROBABILITY = 0.33; // 33% chance of being impostor
+        let sessionToken = '';
+        let playerId = '';
+        let playerName = '';
+        let gameCode = '';
+        let isHost = false;
+        let currentRound = 0;
+        let currentSkipCount = 0;
+        let isImpostor = false;
+        let hasSkipped = false;
+        let pollInterval = null;
+        let playerPollInterval = null;
 
-        // Wordlist configuration
-        const WORDLIST_DIR = 'wordlists';
-        const TOTAL_WORDLIST_FILES = 42;
-        const WORDS_PER_FILE = 200;
-
-        // Simple hash function to convert string to number
-        function hashCode(str) {
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                const char = str.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32-bit integer
-            }
-            return Math.abs(hash);
-        }
-
-        // Seeded random number generator
-        function seededRandom(seed) {
-            const x = Math.sin(seed) * 10000;
-            return x - Math.floor(x);
-        }
-
-        // Get word index from game code and round
-        function getWordIndices(gameCode, round) {
-            const seed = hashCode(gameCode + round);
-            const random = seededRandom(seed);
-
-            // Calculate file and word index
-            const totalWords = TOTAL_WORDLIST_FILES * WORDS_PER_FILE;
-            const wordIndex = Math.floor(random * totalWords);
-
-            const fileIndex = Math.floor(wordIndex / WORDS_PER_FILE) + 1;
-            const wordInFile = wordIndex % WORDS_PER_FILE;
-
-            return { fileIndex, wordInFile };
-        }
-
-        // Load word from wordlist
-        async function loadWord(gameCode, round) {
-            const { fileIndex, wordInFile } = getWordIndices(gameCode, round);
-            const fileName = `${WORDLIST_DIR}/words-${String(fileIndex).padStart(3, '0')}.txt`;
-
-            try {
-                const response = await fetch(fileName);
-                if (!response.ok) {
-                    throw new Error(`Failed to load ${fileName}`);
-                }
-                const text = await response.text();
-                const words = text.split('\n').filter(w => w.trim().length > 0);
-                return words[wordInFile] || words[0];
-            } catch (error) {
-                console.error('Error loading word:', error);
-                return 'BANANA'; // Fallback word
-            }
-        }
-
-        // Initialize
+        // Initialize on load
         function init() {
-            // Check if there's a game code in the URL
+            // Check URL params for game code
             const urlParams = new URLSearchParams(window.location.search);
-            const gameCode = urlParams.get('game');
-            const round = urlParams.get('round');
+            const urlGameCode = urlParams.get('game') || urlParams.get('gameCode');
 
-            if (gameCode) {
-                currentGameCode = gameCode.toUpperCase();
-                if (round) {
-                    currentRound = parseInt(round) || 1;
-                    // If round is specified, go directly to game
-                    startGame();
-                } else {
-                    showLobby();
-                }
+            if (urlGameCode) {
+                document.getElementById('joinCode').value = urlGameCode.toUpperCase();
+                showJoinGame();
             }
         }
 
-        // Update URL with current game state
-        function updateUrl() {
-            const newUrl = `${window.location.pathname}?game=${currentGameCode}&round=${currentRound}`;
-            window.history.pushState({}, '', newUrl);
-        }
-
-        // Navigation functions
+        // Navigation
         function showHome() {
+            stopPolling();
             hideAllScreens();
             document.getElementById('homeScreen').classList.add('active');
+        }
+
+        function showCreateGame() {
+            hideAllScreens();
+            document.getElementById('createScreen').classList.add('active');
+            document.getElementById('createError').style.display = 'none';
         }
 
         function showJoinGame() {
             hideAllScreens();
             document.getElementById('joinScreen').classList.add('active');
+            document.getElementById('joinError').style.display = 'none';
         }
 
         function showLobby() {
             hideAllScreens();
             document.getElementById('lobbyScreen').classList.add('active');
-            document.getElementById('displayGameCode').textContent = currentGameCode;
 
-            // Generate and display game URL (without round for lobby)
-            const gameUrl = `${window.location.origin}${window.location.pathname}?game=${currentGameCode}`;
-            document.getElementById('gameUrl').textContent = gameUrl;
+            // Update lobby UI
+            document.getElementById('displayGameCode').textContent = gameCode;
+            document.getElementById('playerName').textContent = playerName;
+
+            // Show/hide buttons based on host status
+            const startBtn = document.getElementById('startRoundBtn');
+            const instructions = document.getElementById('lobbyInstructions');
+
+            if (isHost) {
+                startBtn.style.display = 'inline-block';
+                instructions.textContent = 'When everyone has joined, start the first round!';
+                document.getElementById('hostIndicator').innerHTML = '<span class="host-badge">HOST</span> You can start rounds';
+            } else {
+                startBtn.style.display = 'none';
+                instructions.textContent = 'Waiting for host to start the round...';
+                document.getElementById('hostIndicator').innerHTML = 'Waiting for host...';
+
+                // Start polling for round updates
+                startPolling();
+            }
+
+            const shareUrl = `${window.location.origin}${window.location.pathname}?gameCode=${gameCode}`;
+            document.getElementById('gameUrl').textContent = shareUrl;
 
             // Update URL
-            const newUrl = `${window.location.pathname}?game=${currentGameCode}`;
-            window.history.pushState({}, '', newUrl);
+            window.history.pushState({}, '', `?gameCode=${gameCode}`);
+
+            // Start polling for player updates
+            startPlayerPolling();
         }
 
         function showGame() {
+            stopPolling();
             hideAllScreens();
             document.getElementById('gameScreen').classList.add('active');
+
+            // Update game UI
+            document.getElementById('gamePlayerName').textContent = playerName;
+            document.getElementById('gameCode').textContent = gameCode;
+            document.getElementById('roundNumber').textContent = currentRound;
+
+            // Show appropriate buttons based on host status
+            const nextRoundBtn = document.getElementById('nextRoundBtn');
+            const endGameBtn = document.getElementById('endGameBtn');
+            const leaveGameBtn = document.getElementById('leaveGameBtn');
+
+            if (isHost) {
+                nextRoundBtn.style.display = 'inline-block';
+                endGameBtn.style.display = 'inline-block';
+                leaveGameBtn.style.display = 'none';
+            } else {
+                nextRoundBtn.style.display = 'none';
+                endGameBtn.style.display = 'none';
+                leaveGameBtn.style.display = 'inline-block';
+            }
+
+            // Start polling for player updates
+            startPlayerPolling();
         }
 
         function hideAllScreens() {
@@ -391,138 +557,763 @@
             screens.forEach(screen => screen.classList.remove('active'));
         }
 
-        // Game code generation
-        function generateGameCode() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            let code = '';
-            for (let i = 0; i < 4; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
+        // Polling for round updates (non-host players)
+        function startPolling() {
+            stopPolling();
+            // Check every 2 seconds if a round has started
+            pollInterval = setInterval(async () => {
+                await checkForRound(true);
+            }, 2000);
+        }
+
+        function stopPolling() {
+            if (pollInterval) {
+                clearInterval(pollInterval);
+                pollInterval = null;
             }
-            return code;
+            if (playerPollInterval) {
+                clearInterval(playerPollInterval);
+                playerPollInterval = null;
+            }
         }
 
-        // Create game
-        function createGame() {
-            currentGameCode = generateGameCode();
-            currentRound = 1;
-            showLobby();
+        // Start polling for player updates
+        function startPlayerPolling() {
+            stopPlayerPolling();
+            // Update player list every 3 seconds
+            updatePlayerList(); // Initial update
+            playerPollInterval = setInterval(async () => {
+                await updatePlayerList();
+
+                // Also check for round/word updates if in game
+                const gameScreen = document.getElementById('gameScreen');
+                if (gameScreen.classList.contains('active')) {
+                    await checkForRoundUpdate();
+                }
+            }, 3000);
         }
 
-        // Join game
-        function joinGame() {
-            const code = document.getElementById('joinCode').value.trim().toUpperCase();
-            if (code.length !== 4) {
-                alert('Please enter a valid 4-letter game code');
+        function stopPlayerPolling() {
+            if (playerPollInterval) {
+                clearInterval(playerPollInterval);
+                playerPollInterval = null;
+            }
+        }
+
+        // Check if the host has advanced to a new round or word was skipped
+        async function checkForRoundUpdate() {
+            if (!sessionToken) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/get_word`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': sessionToken
+                    }
+                });
+
+                if (!response.ok) return;
+
+                const data = await response.json();
+
+                // Check if round number changed (non-host only, since host initiates rounds)
+                if (!isHost && data.roundNumber && data.roundNumber > currentRound) {
+                    // New round started!
+                    await handleNewRound(data.roundNumber);
+                    return;
+                }
+
+                // Check if word was skipped (all players need to detect this)
+                if (data.skipCount !== undefined && data.skipCount > currentSkipCount) {
+                    // Word was skipped!
+                    await handleWordSkip(data.skipCount);
+                }
+            } catch (error) {
+                console.error('Error checking for round update:', error);
+            }
+        }
+
+        // Handle when host starts a new round
+        async function handleNewRound(newRoundNumber) {
+            currentRound = newRoundNumber;
+
+            // Show notification
+            const oldRound = currentRound - 1;
+            alert(`Round ${newRoundNumber} has started!`);
+
+            // Reload the word and update UI
+            await loadWord();
+
+            // Reset word display
+            const wordDisplay = document.getElementById('wordDisplay');
+            const wordText = wordDisplay.querySelector('.word-text');
+            wordText.textContent = '?????';
+            wordDisplay.className = 'word-display' + (isImpostor ? ' impostor' : ' player');
+
+            // Update round number display
+            document.getElementById('roundNumber').textContent = currentRound;
+        }
+
+        // Handle when word is skipped
+        async function handleWordSkip(newSkipCount) {
+            currentSkipCount = newSkipCount;
+
+            // Show notification
+            alert('Word was skipped! Loading new word...');
+
+            // Reload the word and update UI
+            await loadWord();
+
+            // Reset word display
+            const wordDisplay = document.getElementById('wordDisplay');
+            const wordText = wordDisplay.querySelector('.word-text');
+            wordText.textContent = '?????';
+            wordDisplay.className = 'word-display' + (isImpostor ? ' impostor' : ' player');
+        }
+
+        // Fetch and update player list
+        async function updatePlayerList() {
+            if (!sessionToken) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/players`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': sessionToken
+                    }
+                });
+
+                if (!response.ok) {
+                    // Session is invalid - likely been kicked
+                    handleKicked();
+                    return;
+                }
+
+                const data = await response.json();
+
+                // Check if current player is still in the game
+                const currentPlayer = data.players.find(p => p.id === playerId);
+                if (!currentPlayer && playerId) {
+                    // Player was kicked!
+                    handleKicked();
+                    return;
+                }
+
+                // Update host status (might have changed if previous host left)
+                const wasHost = isHost;
+                isHost = currentPlayer && currentPlayer.isHost;
+
+                // If we just became host, update UI
+                if (!wasHost && isHost) {
+                    updateHostControls();
+                }
+
+                displayPlayers(data.players, data.playerCount);
+            } catch (error) {
+                console.error('Error fetching players:', error);
+            }
+        }
+
+        // Update UI controls when player becomes host
+        function updateHostControls() {
+            // Check which screen we're on
+            const lobbyScreen = document.getElementById('lobbyScreen');
+            const gameScreen = document.getElementById('gameScreen');
+
+            if (lobbyScreen.classList.contains('active')) {
+                // Update lobby screen
+                const startBtn = document.getElementById('startRoundBtn');
+                const instructions = document.getElementById('lobbyInstructions');
+                startBtn.style.display = 'inline-block';
+                instructions.textContent = 'When everyone has joined, start the first round!';
+                document.getElementById('hostIndicator').innerHTML = '<span class="host-badge">HOST</span> You are now the host!';
+
+                alert('You are now the host!');
+            } else if (gameScreen.classList.contains('active')) {
+                // Update game screen
+                const nextRoundBtn = document.getElementById('nextRoundBtn');
+                const endGameBtn = document.getElementById('endGameBtn');
+                nextRoundBtn.style.display = 'inline-block';
+                endGameBtn.style.display = 'inline-block';
+
+                alert('You are now the host!');
+            }
+        }
+
+        // Handle being kicked from the game
+        function handleKicked() {
+            stopPolling();
+
+            // Show notification
+            alert('You have been removed from the game by the host.');
+
+            // Reset state and return home
+            sessionToken = '';
+            playerId = '';
+            playerName = '';
+            gameCode = '';
+            isHost = false;
+            currentRound = 0;
+            isImpostor = false;
+            hasSkipped = false;
+
+            window.history.pushState({}, '', window.location.pathname);
+            showHome();
+        }
+
+        // Display players in the UI
+        function displayPlayers(players, playerCount) {
+            // Update lobby player list
+            const lobbyList = document.getElementById('lobbyPlayerList');
+            const lobbyCount = document.getElementById('lobbyPlayerCount');
+
+            // Update game screen player list
+            const gameList = document.getElementById('gamePlayerList');
+            const gameCount = document.getElementById('gamePlayerCount');
+
+            if (!players || players.length === 0) {
+                lobbyList.innerHTML = '<li class="player-item">No players</li>';
+                gameList.innerHTML = '<li class="player-item">No players</li>';
+                lobbyCount.textContent = '0 players';
+                gameCount.textContent = '0 players';
                 return;
             }
-            currentGameCode = code;
-            currentRound = 1;
 
-            // Update URL without reloading
-            const newUrl = `${window.location.pathname}?game=${currentGameCode}`;
-            window.history.pushState({}, '', newUrl);
+            // Build player list HTML
+            let html = '';
+            players.forEach(player => {
+                const isYou = player.id === playerId;
+                const classes = ['player-item'];
+                if (isYou) classes.push('is-you');
+                if (player.isHost) classes.push('is-host');
 
-            showLobby();
+                // Show kick button for host (not for themselves)
+                const showKickBtn = isHost && !isYou;
+                const kickBtn = showKickBtn
+                    ? `<button class="kick-btn" onclick="kickPlayer('${player.id}')">Kick</button>`
+                    : '';
+
+                html += `<li class="${classes.join(' ')}">
+                    <span>${player.name}${isYou ? ' (You)' : ''}</span>
+                    <span>
+                        ${player.isHost ? '<span class="host-badge">HOST</span>' : ''}
+                        ${kickBtn}
+                    </span>
+                </li>`;
+            });
+
+            lobbyList.innerHTML = html;
+            gameList.innerHTML = html;
+
+            const countText = `${playerCount} player${playerCount !== 1 ? 's' : ''}`;
+            lobbyCount.textContent = countText;
+            gameCount.textContent = countText;
         }
 
-        // Start game
-        async function startGame() {
-            // Show loading state
-            const wordDisplay = document.getElementById('wordDisplay');
-            wordDisplay.textContent = 'Loading...';
-            wordDisplay.className = 'word-display';
+        // Check if a round has started
+        async function checkForRound(silent = false) {
+            if (!sessionToken) return;
 
-            // Load word based on game code and round
-            currentWord = await loadWord(currentGameCode, currentRound);
+            try {
+                const response = await fetch(`${API_BASE}/get_word`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': sessionToken
+                    }
+                });
 
-            // Determine if this player is an impostor
-            isCurrentPlayerImpostor = Math.random() < IMPOSTOR_PROBABILITY;
-
-            // Set up word display with placeholder
-            wordDisplay.textContent = '?????';
-            wordDisplay.className = 'word-display' + (isCurrentPlayerImpostor ? ' impostor' : ' player');
-
-            // Update round number
-            document.getElementById('roundNumber').textContent = currentRound;
-
-            // Display game code and URL on game screen (with round)
-            document.getElementById('gameScreenCode').textContent = currentGameCode;
-            const gameUrl = `${window.location.origin}${window.location.pathname}?game=${currentGameCode}&round=${currentRound}`;
-            document.getElementById('gameScreenUrl').textContent = gameUrl;
-
-            // Update URL with round
-            updateUrl();
-
-            // Setup reveal on hold
-            setupRevealOnHold();
-
-            showGame();
+                if (response.ok) {
+                    // Round exists! Load it
+                    const data = await response.json();
+                    currentRound = data.roundNumber;
+                    await loadWord();
+                    showGame();
+                } else if (!silent) {
+                    // No round yet
+                    alert('No round has started yet. Wait for the host to start!');
+                }
+            } catch (error) {
+                if (!silent) {
+                    console.error('Error checking for round:', error);
+                }
+            }
         }
 
-        // Setup reveal on hold functionality
-        function setupRevealOnHold() {
+        // API calls
+        async function createGame() {
+            const name = document.getElementById('createName').value.trim();
+            const errorEl = document.getElementById('createError');
+
+            if (!name) {
+                errorEl.textContent = 'Please enter your name';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                // Create game
+                const createResponse = await fetch(`${API_BASE}/create_game`, {
+                    method: 'POST'
+                });
+
+                if (!createResponse.ok) {
+                    throw new Error('Failed to create game');
+                }
+
+                const createData = await createResponse.json();
+                gameCode = createData.gameCode;
+
+                // Join the game
+                const joinResponse = await fetch(`${API_BASE}/join_game?gameCode=${gameCode}&name=${encodeURIComponent(name)}`, {
+                    method: 'POST'
+                });
+
+                if (!joinResponse.ok) {
+                    throw new Error('Failed to join game');
+                }
+
+                const joinData = await joinResponse.json();
+                sessionToken = joinData.sessionToken;
+                playerId = joinData.playerId;
+                playerName = joinData.playerName;
+                isHost = joinData.isHost;
+
+                showLobby();
+            } catch (error) {
+                errorEl.textContent = error.message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        async function joinGame() {
+            const code = document.getElementById('joinCode').value.trim().toUpperCase();
+            const name = document.getElementById('joinName').value.trim();
+            const errorEl = document.getElementById('joinError');
+
+            if (!code) {
+                errorEl.textContent = 'Please enter a game code';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (!name) {
+                errorEl.textContent = 'Please enter your name';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/join_game?gameCode=${code}&name=${encodeURIComponent(name)}`, {
+                    method: 'POST'
+                });
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text || 'Failed to join game');
+                }
+
+                const data = await response.json();
+                sessionToken = data.sessionToken;
+                playerId = data.playerId;
+                playerName = data.playerName;
+                gameCode = data.gameCode;
+                isHost = data.isHost;
+
+                showLobby();
+            } catch (error) {
+                errorEl.textContent = error.message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        async function startRound() {
+            if (!isHost) {
+                alert('Only the host can start rounds');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/next_round`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': sessionToken
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to start round');
+                }
+
+                const data = await response.json();
+                currentRound = data.roundNumber;
+
+                await loadWord();
+                showGame();
+            } catch (error) {
+                alert('Error starting round: ' + error.message);
+            }
+        }
+
+        async function nextRound() {
+            if (!isHost) {
+                alert('Only the host can advance rounds');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/next_round`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': sessionToken
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to start next round');
+                }
+
+                const data = await response.json();
+                currentRound = data.roundNumber;
+
+                await loadWord();
+
+                // Reset word display
+                const wordDisplay = document.getElementById('wordDisplay');
+                const wordText = wordDisplay.querySelector('.word-text');
+                wordText.textContent = '?????';
+                wordDisplay.className = 'word-display' + (isImpostor ? ' impostor' : ' player');
+
+                document.getElementById('roundNumber').textContent = currentRound;
+            } catch (error) {
+                alert('Error starting next round: ' + error.message);
+            }
+        }
+
+        async function loadWord() {
+            try {
+                const response = await fetch(`${API_BASE}/get_word`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': sessionToken
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to get word');
+                }
+
+                const data = await response.json();
+                isImpostor = data.isImpostor;
+                currentRound = data.roundNumber;
+                currentSkipCount = data.skipCount || 0;
+                hasSkipped = false;
+
+                // Set up word display
+                const wordDisplay = document.getElementById('wordDisplay');
+                const wordText = wordDisplay.querySelector('.word-text');
+                wordText.textContent = '?????';
+                wordDisplay.className = 'word-display' + (isImpostor ? ' impostor' : ' player');
+
+                // Store the word for reveal
+                const wordToReveal = isImpostor ? 'IMPOSTOR' : data.word;
+                wordDisplay.dataset.word = wordToReveal;
+
+                // Setup reveal on hold with swipe-to-skip
+                setupRevealOnHold(wordToReveal);
+
+                // Update skip hint text
+                const skipHint = document.getElementById('skipHint');
+                if (isImpostor) {
+                    skipHint.textContent = '';
+                    skipHint.className = 'skip-hint';
+                } else if (hasSkipped) {
+                    skipHint.textContent = '✓ Skip vote recorded';
+                    skipHint.className = 'skip-hint already-skipped visible';
+                } else {
+                    skipHint.textContent = '👈 Swipe left to vote to skip word (50% innocent votes required)';
+                    skipHint.className = 'skip-hint can-skip';
+                }
+            } catch (error) {
+                alert('Error loading word: ' + error.message);
+            }
+        }
+
+        function setupRevealOnHold(word) {
             const wordDisplay = document.getElementById('wordDisplay');
 
+            // Remove old listeners by cloning
+            const newDisplay = wordDisplay.cloneNode(true);
+            wordDisplay.parentNode.replaceChild(newDisplay, wordDisplay);
+
+            // Get the fresh elements
+            const display = document.getElementById('wordDisplay');
+            const wordText = display.querySelector('.word-text');
+            const skipHint = display.querySelector('.skip-hint');
+
+            // Swipe state
+            let isHolding = false;
+            let startX = 0;
+            let startY = 0;
+            let currentX = 0;
+            let swipeTriggered = false;
+            const SWIPE_THRESHOLD = 100; // pixels
+
+            // Can this player skip?
+            const canSkip = !isImpostor && !hasSkipped;
+
+            // Define reveal/hide functions that reference the NEW element
             function reveal() {
-                wordDisplay.textContent = isCurrentPlayerImpostor ? 'IMPOSTOR' : currentWord;
-                wordDisplay.classList.add('revealed');
+                wordText.textContent = word;
+                display.classList.add('revealed');
+                // Show skip hint when revealing word
+                if (canSkip) {
+                    skipHint.classList.add('visible');
+                }
             }
 
             function hide() {
-                wordDisplay.textContent = '?????';
-                wordDisplay.classList.remove('revealed');
+                wordText.textContent = '?????';
+                display.classList.remove('revealed');
+                display.classList.remove('swiping');
+                display.style.setProperty('--swipe-distance', '0px');
+                // Hide skip hint when hiding word
+                skipHint.classList.remove('visible');
+            }
+
+            function handleStart(clientX, clientY) {
+                isHolding = true;
+                startX = clientX;
+                startY = clientY;
+                currentX = clientX;
+                swipeTriggered = false;
+                reveal();
+            }
+
+            function handleMove(clientX, clientY) {
+                if (!isHolding) return;
+
+                currentX = clientX;
+                const deltaX = currentX - startX;
+                const deltaY = Math.abs(clientY - startY);
+
+                // Only track horizontal swipes (not vertical)
+                if (deltaY > 30) return;
+
+                // Only swipe left and only if player can skip
+                if (canSkip && deltaX < 0) {
+                    display.classList.add('swiping');
+                    const swipeAmount = Math.min(Math.abs(deltaX), SWIPE_THRESHOLD);
+                    display.style.setProperty('--swipe-distance', `-${swipeAmount}px`);
+
+                    // Trigger skip if threshold reached
+                    if (Math.abs(deltaX) >= SWIPE_THRESHOLD && !swipeTriggered) {
+                        swipeTriggered = true;
+                        handleEnd();
+                        voteSkip();
+                    }
+                }
+            }
+
+            function handleEnd() {
+                if (isHolding) {
+                    isHolding = false;
+                    hide();
+                }
             }
 
             // Mouse events
-            wordDisplay.addEventListener('mousedown', reveal);
-            wordDisplay.addEventListener('mouseup', hide);
-            wordDisplay.addEventListener('mouseleave', hide);
-
-            // Touch events for mobile
-            wordDisplay.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                reveal();
+            display.addEventListener('mousedown', (e) => {
+                handleStart(e.clientX, e.clientY);
             });
 
-            wordDisplay.addEventListener('touchend', hide);
-            wordDisplay.addEventListener('touchcancel', hide);
+            display.addEventListener('mousemove', (e) => {
+                handleMove(e.clientX, e.clientY);
+            });
+
+            display.addEventListener('mouseup', handleEnd);
+            display.addEventListener('mouseleave', handleEnd);
+
+            // Touch events
+            display.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                handleStart(touch.clientX, touch.clientY);
+            });
+
+            display.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (e.touches.length > 0) {
+                    const touch = e.touches[0];
+                    handleMove(touch.clientX, touch.clientY);
+                }
+            });
+
+            display.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                handleEnd();
+            });
+
+            display.addEventListener('touchcancel', (e) => {
+                e.preventDefault();
+                handleEnd();
+            });
         }
 
-        // Next round
-        function nextRound() {
-            currentRound++;
-            startGame();
+        async function voteSkip() {
+            if (isImpostor) {
+                return;
+            }
+
+            if (hasSkipped) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/vote_word_skip`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': sessionToken
+                    }
+                });
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text || 'Failed to vote skip');
+                }
+
+                const data = await response.json();
+                hasSkipped = true;
+
+                // Update skip hint
+                const skipHint = document.getElementById('skipHint');
+                skipHint.textContent = '✓ Skip vote recorded';
+                skipHint.className = 'skip-hint already-skipped';
+
+                if (data.skipped) {
+                    alert('Word skipped! Loading new word...');
+                    await loadWord();
+
+                    // Reset word display
+                    const wordDisplay = document.getElementById('wordDisplay');
+                    const wordText = wordDisplay.querySelector('.word-text');
+                    wordText.textContent = '?????';
+                    wordDisplay.className = 'word-display' + (isImpostor ? ' impostor' : ' player');
+                } else {
+                    // Show confirmation that vote was recorded
+                    const voteCount = data.skipVotes || '?';
+                    alert(`Skip vote recorded! (Waiting for more votes)`);
+                }
+            } catch (error) {
+                alert('Error voting to skip: ' + error.message);
+            }
         }
 
-        // End game
+        async function kickPlayer(playerIdToKick) {
+            if (!isHost) {
+                alert('Only the host can kick players');
+                return;
+            }
+
+            // Find player name for confirmation
+            const response = await fetch(`${API_BASE}/players`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': sessionToken
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const playerToKick = data.players.find(p => p.id === playerIdToKick);
+                const playerNameToKick = playerToKick ? playerToKick.name : 'this player';
+
+                if (!confirm(`Kick ${playerNameToKick} from the game?`)) {
+                    return;
+                }
+            }
+
+            try {
+                const kickResponse = await fetch(`${API_BASE}/kick_player?playerId=${playerIdToKick}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': sessionToken
+                    }
+                });
+
+                if (!kickResponse.ok) {
+                    const text = await kickResponse.text();
+                    throw new Error(text || 'Failed to kick player');
+                }
+
+                // Refresh player list immediately
+                await updatePlayerList();
+            } catch (error) {
+                alert('Error kicking player: ' + error.message);
+            }
+        }
+
         function endGame() {
             if (confirm('Are you sure you want to end the game?')) {
-                currentRound = 1;
-                // Clear URL params
+                sessionToken = '';
+                playerId = '';
+                playerName = '';
+                gameCode = '';
+                isHost = false;
+                currentRound = 0;
+                isImpostor = false;
+                hasSkipped = false;
+                stopPolling();
+
                 window.history.pushState({}, '', window.location.pathname);
                 showHome();
             }
         }
 
-        // Copy game URL
-        function copyGameUrl() {
-            // If we're in the game screen, include the round; otherwise just the game code
-            const isInGame = document.getElementById('gameScreen').classList.contains('active');
-            let gameUrl;
-            if (isInGame) {
-                gameUrl = `${window.location.origin}${window.location.pathname}?game=${currentGameCode}&round=${currentRound}`;
-            } else {
-                gameUrl = `${window.location.origin}${window.location.pathname}?game=${currentGameCode}`;
+        async function leaveGame() {
+            if (!confirm('Are you sure you want to leave this game?')) {
+                return;
             }
 
-            navigator.clipboard.writeText(gameUrl).then(() => {
+            // If we have a session token, notify the backend
+            if (sessionToken) {
+                try {
+                    await fetch(`${API_BASE}/leave_game`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': sessionToken
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error leaving game:', error);
+                }
+            }
+
+            // Clean up and return to home
+            endGame();
+        }
+
+        function copyGameUrl() {
+            const shareUrl = `${window.location.origin}${window.location.pathname}?gameCode=${gameCode}`;
+
+            navigator.clipboard.writeText(shareUrl).then(() => {
                 alert('Game link copied to clipboard!');
             }).catch(err => {
-                alert('Failed to copy link. Please copy manually.');
+                // Fallback for browsers that don't support clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = shareUrl;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Game link copied to clipboard!');
+                } catch (err) {
+                    alert('Failed to copy link. Please copy manually: ' + shareUrl);
+                }
+                document.body.removeChild(textArea);
             });
         }
 
-        // Initialize on load
+        // Initialize on page load
         init();
     </script>
 </body>
