@@ -1,8 +1,5 @@
 .PHONY: build run test clean
 
-ARCH ?= arm64
-S3_BUCKET ?= cypress-studios
-
 # Build the server binary
 build:
 	go build -o bin/impostor ./cmd/server
@@ -17,7 +14,7 @@ build-linux-arm64:
 
 # Run the server (port 8080)
 run: build
-	@echo "🎭 Starting Impostor on http://localhost:80"
+	@echo "🎭 Starting Impostor on http://localhost:8080"
 	@echo "Press Ctrl+C to stop"
 	@./bin/impostor
 
@@ -70,7 +67,7 @@ upload-to-s3:
 	@echo "☁️  Uploading artifacts to S3 bucket: $(S3_BUCKET)"
 	@aws s3 cp ./bin/impostor s3://$(S3_BUCKET)/impostor
 	@aws s3 cp ./index.html s3://$(S3_BUCKET)/index.html
-	@aws s3 cp ./wordlists/ s3://$(S3_BUCKET)/wordlists/ --recursive
+	@aws s3 cp ./wordlist.txt s3://$(S3_BUCKET)/wordlist.txt
 	@echo "✅ Upload complete!"
 
 terraform-init:
@@ -98,11 +95,15 @@ deploy:
 	@echo "☁️  Step 2/3: Uploading to S3..."
 	@aws s3 cp ./bin/impostor s3://$(S3_BUCKET)/impostor
 	@aws s3 cp ./index.html s3://$(S3_BUCKET)/index.html
-	@aws s3 cp ./wordlists/ s3://$(S3_BUCKET)/wordlists/ --recursive
+	@aws s3 cp ./wordlist.txt s3://$(S3_BUCKET)/wordlist.txt
 	@echo "✅ Upload complete!"
 	@echo ""
+	@echo "🔧 Initializing Terraform..."
+	@cd terraform && terraform init && terraform plan
+	@echo ""
 	@echo "🚀 Step 3/3: Deploying infrastructure..."
-	@cd terraform && terraform plan && terraform apply -replace=aws_instance.impostor_server
+	@echo ""
+	@cd terraform && terraform apply -replace=aws_instance.impostor_server
 	@echo ""
 	@echo "✅ Deployment complete!"
 	@echo ""

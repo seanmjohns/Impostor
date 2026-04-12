@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"path/filepath"
 	"strings"
 	"time"
 )
@@ -16,33 +15,19 @@ type WordList struct {
 	rng   *rand.Rand
 }
 
-// New creates a new WordList by loading all word files from the specified directory
-func New(wordlistDir string) (*WordList, error) {
+// New creates a new WordList by loading words from a single file
+func New(wordlistFile string) (*WordList, error) {
 	wl := &WordList{
 		words: make([]string, 0),
 		rng:   rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
 
-	// Find all .txt files in the wordlist directory
-	pattern := filepath.Join(wordlistDir, "*.txt")
-	files, err := filepath.Glob(pattern)
-	if err != nil {
-		return nil, fmt.Errorf("failed to find wordlist files: %w", err)
-	}
-
-	if len(files) == 0 {
-		return nil, fmt.Errorf("no wordlist files found in %s", wordlistDir)
-	}
-
-	// Load words from each file
-	for _, file := range files {
-		if err := wl.loadFile(file); err != nil {
-			return nil, fmt.Errorf("failed to load %s: %w", file, err)
-		}
+	if err := wl.loadFile(wordlistFile); err != nil {
+		return nil, fmt.Errorf("failed to load wordlist %s: %w", wordlistFile, err)
 	}
 
 	if len(wl.words) == 0 {
-		return nil, fmt.Errorf("no words loaded from wordlist files")
+		return nil, fmt.Errorf("no words loaded from %s", wordlistFile)
 	}
 
 	return wl, nil

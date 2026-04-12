@@ -2,7 +2,6 @@ package wordlist
 
 import (
 	"os"
-	"path/filepath"
 	"testing"
 )
 
@@ -69,104 +68,83 @@ func TestGetRandomWordEmpty(t *testing.T) {
 	}
 }
 
-func TestNewFromDirectory(t *testing.T) {
-	// Create a temporary directory with word files
-	tmpDir := t.TempDir()
-
-	// Create test word files
-	file1 := filepath.Join(tmpDir, "words1.txt")
-	file2 := filepath.Join(tmpDir, "words2.txt")
-
-	err := os.WriteFile(file1, []byte("apple\nbanana\ncherry\n"), 0644)
+func TestNewFromFile(t *testing.T) {
+	tmpFile, err := os.CreateTemp("", "wordlist-*.txt")
 	if err != nil {
-		t.Fatalf("Failed to create test file: %v", err)
+		t.Fatalf("Failed to create temp file: %v", err)
 	}
+	defer os.Remove(tmpFile.Name())
 
-	err = os.WriteFile(file2, []byte("dog\ncat\nbird\n"), 0644)
-	if err != nil {
-		t.Fatalf("Failed to create test file: %v", err)
+	if _, err := tmpFile.WriteString("apple\nbanana\ncherry\ndog\ncat\nbird\n"); err != nil {
+		t.Fatalf("Failed to write temp file: %v", err)
 	}
+	tmpFile.Close()
 
-	// Load wordlist from directory
-	wl, err := New(tmpDir)
+	wl, err := New(tmpFile.Name())
 	if err != nil {
 		t.Fatalf("Failed to load wordlist: %v", err)
 	}
 
-	// Should have 6 words total
 	if wl.Count() != 6 {
 		t.Errorf("Expected 6 words, got %d", wl.Count())
 	}
 
-	// Verify all words can be retrieved
 	foundWords := make(map[string]bool)
 	for i := 0; i < 200; i++ {
 		word := wl.GetRandomWord()
 		foundWords[word] = true
 	}
 
-	expectedWords := []string{"apple", "banana", "cherry", "dog", "cat", "bird"}
-	for _, w := range expectedWords {
+	for _, w := range []string{"apple", "banana", "cherry", "dog", "cat", "bird"} {
 		if !foundWords[w] {
 			t.Errorf("Expected word '%s' not found", w)
 		}
 	}
 }
 
-func TestNewFromDirectoryNoFiles(t *testing.T) {
-	tmpDir := t.TempDir()
-
-	// Try to load from empty directory
-	_, err := New(tmpDir)
+func TestNewFromFileMissing(t *testing.T) {
+	_, err := New("/nonexistent/path/wordlist.txt")
 	if err == nil {
-		t.Error("Expected error when loading from directory with no word files")
+		t.Error("Expected error when file does not exist")
 	}
 }
 
-func TestNewFromDirectoryWithEmptyFiles(t *testing.T) {
-	tmpDir := t.TempDir()
-
-	// Create empty file
-	emptyFile := filepath.Join(tmpDir, "empty.txt")
-	err := os.WriteFile(emptyFile, []byte(""), 0644)
+func TestNewFromEmptyFile(t *testing.T) {
+	tmpFile, err := os.CreateTemp("", "wordlist-*.txt")
 	if err != nil {
-		t.Fatalf("Failed to create test file: %v", err)
+		t.Fatalf("Failed to create temp file: %v", err)
 	}
+	defer os.Remove(tmpFile.Name())
+	tmpFile.Close()
 
-	// Try to load
-	_, err = New(tmpDir)
+	_, err = New(tmpFile.Name())
 	if err == nil {
-		t.Error("Expected error when all word files are empty")
+		t.Error("Expected error when wordlist file is empty")
 	}
 }
 
-func TestNewFromDirectoryWithWhitespace(t *testing.T) {
-	tmpDir := t.TempDir()
-
-	// Create file with whitespace
-	file := filepath.Join(tmpDir, "words.txt")
-	content := `
-	apple
-	  banana
-
-	cherry
-	`
-	err := os.WriteFile(file, []byte(content), 0644)
+func TestNewFromFileWithWhitespace(t *testing.T) {
+	tmpFile, err := os.CreateTemp("", "wordlist-*.txt")
 	if err != nil {
-		t.Fatalf("Failed to create test file: %v", err)
+		t.Fatalf("Failed to create temp file: %v", err)
 	}
+	defer os.Remove(tmpFile.Name())
 
-	wl, err := New(tmpDir)
+	content := "\n\tapple\n  banana\n\ncherry\n"
+	if _, err := tmpFile.WriteString(content); err != nil {
+		t.Fatalf("Failed to write temp file: %v", err)
+	}
+	tmpFile.Close()
+
+	wl, err := New(tmpFile.Name())
 	if err != nil {
 		t.Fatalf("Failed to load wordlist: %v", err)
 	}
 
-	// Should have 3 words (whitespace lines ignored)
 	if wl.Count() != 3 {
 		t.Errorf("Expected 3 words, got %d", wl.Count())
 	}
 
-	// Verify words are trimmed
 	foundWords := make(map[string]bool)
 	for i := 0; i < 100; i++ {
 		word := wl.GetRandomWord()
