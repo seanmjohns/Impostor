@@ -1,5 +1,8 @@
 .PHONY: build run test clean
 
+ARCH ?= arm64
+S3_BUCKET ?= cypress-studios
+
 # Build the server binary
 build:
 	go build -o bin/impostor ./cmd/server

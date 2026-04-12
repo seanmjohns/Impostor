@@ -51,13 +51,13 @@ resource "aws_security_group" "impostor_sg" {
   }
 
   # SSH access
-  #ingress {
+  # ingress {
   #  description = "SSH"
   #  from_port   = 22
   #  to_port     = 22
   #  protocol    = "tcp"
   #  cidr_blocks = var.allowed_ssh_cidr_blocks
-  #}
+  # }
 
   # Allow all outbound traffic
   egress {
