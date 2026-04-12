@@ -15,22 +15,21 @@ import (
 
 func main() {
 	// Parse command line flags
-	portFlag := flag.String("port", "", "Port to listen on (default: 443, or PORT env var)")
+	portFlag := flag.String("port", "", "Port to listen on (default: 8080, or PORT env var)")
 	flag.Parse()
-	// Determine wordlist directory
-	wordlistDir := os.Getenv("WORDLIST_DIR")
-	if wordlistDir == "" {
-		// Default to ./wordlists relative to current directory
-		wordlistDir = "wordlists"
+	// Determine wordlist file
+	wordlistFile := os.Getenv("WORDLIST_FILE")
+	if wordlistFile == "" {
+		wordlistFile = "wordlist.txt"
 	}
 
 	// Load wordlist
-	log.Printf("Loading wordlists from %s...", wordlistDir)
-	wl, err := wordlist.New(wordlistDir)
+	log.Printf("Loading wordlist from %s...", wordlistFile)
+	wl, err := wordlist.New(wordlistFile)
 	if err != nil {
-		log.Fatalf("Failed to load wordlists: %v", err)
+		log.Fatalf("Failed to load wordlist: %v", err)
 	}
-	log.Printf("Loaded %d words from wordlists", wl.Count())
+	log.Printf("Loaded %d words", wl.Count())
 
 	// Create game manager
 	gameManager := game.NewManager(wl)

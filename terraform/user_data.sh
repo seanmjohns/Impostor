@@ -19,7 +19,7 @@ cd /opt/impostor
 echo "Downloading application artifacts from S3..."
 aws s3 cp s3://${s3_bucket}/impostor /opt/impostor/impostor
 aws s3 cp s3://${s3_bucket}/index.html /opt/impostor/index.html
-aws s3 cp s3://${s3_bucket}/wordlists/ /opt/impostor/wordlists/ --recursive
+aws s3 cp s3://${s3_bucket}/wordlist.txt /opt/impostor/wordlist.txt
 
 
 # Make binary executable
